@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AA-Burgers | Fresh. Hot. Bold.</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+<body class="page-fade-in">
+
+  <!-- Header Section -->
+  <header class="header" id="main-header">
+    <div class="header-container">
+      <div class="logo">
+        <!-- // INSERT: AA-Burgers logo image here -->
+        <span class="logo-text">AA-Burgers</span>
+      </div>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle menu">
+        ☰
+      </button>
+
+      <div class="header-right" id="header-right-actions">
+        <!-- Injected via JS based on session: 
+             Login / Sign-up OR user email linking to account -->
+        <a href="/auth" class="btn-primary" id="auth-link">Login / Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Slider Section -->
+  <section class="hero-slider" id="hero-slider">
+    <div class="slide active">
+      <!-- // INSERT: Hero banner image 1 — recommended size 1920x600px -->
+      <div class="slide-overlay">
+        <h2>Fresh. Hot. Bold.</h2>
+        <p>The best smash burgers in Karachi.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <!-- // INSERT: Hero banner image 2 — recommended size 1920x600px -->
+      <div class="slide-overlay">
+        <h2>Midnight Deals Now Live</h2>
+        <p>Satisfy your late-night cravings.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <!-- // INSERT: Hero banner image 3 — recommended size 1920x600px -->
+      <div class="slide-overlay">
+        <h2>Family Feasts</h2>
+        <p>Bundle up and save big.</p>
+      </div>
+    </div>
+
+    <!-- Slider Navigation -->
+    <button class="slider-btn left" id="slider-prev">❮</button>
+    <button class="slider-btn right" id="slider-next">❯</button>
+    <div class="slider-dots" id="slider-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- Location Bar Section -->
+  <section class="location-bar-container">
+    <div class="location-bar">
+      <button class="location-btn" id="track-location-btn">
+        📍 Track My Location
+      </button>
+      <div class="location-dropdown-wrapper">
+        <button class="location-btn" id="select-area-btn">
+          Select Area ▾
+        </button>
+        <div class="location-dropdown" id="location-dropdown">
+          <ul id="area-list">
+            <!-- Areas populated via JS -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="location-status" class="location-status"></div>
+  </section>
+
+  <!-- Category Navigation Bar -->
+  <nav class="category-nav" id="category-nav">
+    <div class="nav-container">
+      <div class="tabs-scroll" id="category-tabs">
+        <button class="tab-btn active" data-category="burgers">Burgers</button>
+        <button class="tab-btn" data-category="drinks">Drinks</button>
+        <button class="tab-btn" data-category="fries">Fries</button>
+        <button class="tab-btn" data-category="combos">Family Combo</button>
+        <button class="tab-btn" data-category="midnight">Midnight Deals</button>
+      </div>
+      <a href="/checkout" class="cart-btn" id="cart-btn">
+        🛒 Cart (<span id="cart-count">0</span>)
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Store / Products Section -->
+  <main class="store-section" id="store-section">
+    <div class="products-grid" id="products-grid">
+      <!-- Products dynamically generated via JS -->
+    </div>
+  </main>
+
+  <!-- Product Detail Modal (Hidden by default) -->
+  <div class="modal-overlay" id="product-modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">×</button>
+      <div class="modal-image-container">
+        <!-- // INSERT: product image (dynamic) -->
+        <div class="modal-placeholder-image" id="modal-image"></div>
+      </div>
+      <div class="modal-details">
+        <h3 id="modal-title">Product Name</h3>
+        <p id="modal-description" class="modal-desc">Description</p>
+        <p class="modal-price" id="modal-price">Rs. 0</p>
+        
+        <div class="modal-options" id="modal-options">
+          <!-- Options injected via JS -->
+        </div>
+
+        <div class="modal-actions">
+          <div class="quantity-selector">
+            <button class="qty-btn" id="qty-minus">-</button>
+            <span id="qty-value">1</span>
+            <button class="qty-btn" id="qty-plus">+</button>
+          </div>
+          <button class="btn-primary full-width" id="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h4>Our Branches</h4>
+        <ul class="branch-list">
+          <li><strong>Clifton:</strong> Block 5, Near Schön Circle</li>
+          <li><strong>DHA:</strong> Phase 6, Bukhari Commercial</li>
+          <li><strong>Gulshan-e-Iqbal:</strong> Block 4, NIPA Chaurangi</li>
+          <li><strong>North Nazimabad:</strong> Block H, Five Star Chaurangi</li>
+          <li><strong>Bahria Town:</strong> Precinct 10, Theme Park Road</li>
+        </ul>
+      </div>
+      <div class="footer-right">
+        <h4>Contact Us</h4>
+        <p>📞 021-111-222-333</p>
+        <p>✉️ hello@aaburgers.pk</p>
+        <div class="social-links">
+          <span>fb</span>
+          <span>ig</span>
+          <span>tw</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 AA-Burgers. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/home.js"></script>
+</body>
+</html>

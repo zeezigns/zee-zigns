@@ -1,0 +1,17 @@
+{
+  "name": "aa-burgers",
+  "version": "1.0.0",
+  "description": "AA-Burgers Full Stack Demo",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.3",
+    "express-session": "^1.19.0",
+    "lowdb": "^1.0.0",
+    "sqlite3": "^6.0.1",
+    "uuid": "^13.0.0"
+  }
+}

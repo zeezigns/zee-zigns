@@ -1,0 +1,255 @@
+.dashboard-bg {
+  background-color: var(--bg-subtle);
+  min-height: 100vh;
+}
+
+.dash-header {
+  background: var(--secondary);
+  box-shadow: var(--shadow-sm);
+  padding: 15px 0;
+}
+
+.dash-header .header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.dash-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.dash-title {
+  margin-bottom: 30px;
+  color: var(--text-light);
+  font-size: 2rem;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 30px;
+}
+
+.dash-card {
+  background: var(--secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 30px;
+  height: max-content;
+}
+
+.dash-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Account Details */
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-label {
+  width: 130px;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+  padding-top: 5px;
+}
+
+.value-container {
+  flex: 1;
+  padding-right: 15px;
+}
+
+.detail-value {
+  color: var(--text-light);
+  word-break: break-word;
+  display: block;
+  padding-top: 5px;
+}
+
+.detail-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.detail-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+}
+
+.action-container {
+  min-width: 80px;
+  text-align: right;
+  padding-top: 5px;
+}
+
+.text-primary { color: var(--primary); font-weight: 600; text-decoration: underline; }
+.text-success { color: #28a745; font-weight: 600; margin-right: 10px; }
+.text-danger { color: #dc3545; font-weight: 600; }
+
+.hidden { display: none !important; }
+
+/* Orders List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-card {
+  border: 1px solid #eee;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: var(--transition);
+}
+
+.order-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #ddd;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.order-number {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.order-date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.order-items {
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #eee;
+  padding-top: 15px;
+}
+
+.order-total {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.order-status {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #eee;
+}
+
+.status-Pending { background: #ffeeba; color: #856404; }
+.status-Preparing { background: #b8daff; color: #004085; }
+.status-Out { background: #c3e6cb; color: #155724; }
+.status-Delivered { background: #d4edda; color: #155724; }
+
+.empty-orders {
+  text-align: center;
+  padding: 40px 0;
+  color: #888;
+}
+
+/* Skeletons */
+.skeleton-line {
+  height: 20px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+.skeleton-line:last-child { width: 60%; }
+
+/* Toast */
+.toast-success { border-left: 4px solid #28a745; }
+.toast-error { border-left: 4px solid #dc3545; }
+
+@media (max-width: 800px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .dash-container {
+    padding: 0 12px;
+    margin: 20px auto;
+  }
+
+  .dash-card {
+    padding: 20px 16px;
+  }
+
+  .detail-row {
+    flex-direction: column;
+  }
+
+  .detail-label {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .action-container {
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .order-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dash-header .logo-text {
+    font-size: 1.1rem;
+  }
+}

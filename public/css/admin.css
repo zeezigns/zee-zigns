@@ -1,0 +1,307 @@
+.admin-bg {
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+/* Login Modal */
+.login-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.login-card {
+  background: var(--secondary);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header h2 {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.8rem;
+}
+
+.login-header p {
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+}
+
+/* Dashboard Header */
+.admin-header {
+  background: #111;
+  color: #fff;
+  padding: 15px 0;
+}
+
+.admin-header .logo-text { color: #fff; }
+.admin-header .header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-content {
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #ddd;
+}
+
+.admin-tab {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid transparent;
+}
+
+.admin-tab.active {
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
+  background: rgba(255, 107, 0, 0.05);
+}
+
+.tab-section { display: none; }
+.tab-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+/* Sections */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  color: #222;
+}
+
+.search-input {
+  width: 350px;
+  padding: 10px 15px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #ccc;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255,107,0,0.1);
+}
+
+/* Table */
+.table-container {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  background: var(--primary);
+  color: #fff;
+  padding: 15px 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.admin-table th:first-child { border-top-left-radius: var(--radius-lg); }
+.admin-table th:last-child { border-top-right-radius: var(--radius-lg); }
+
+.admin-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.admin-table tbody tr {
+  transition: background 0.2s ease;
+  opacity: 0; /* For staggered animation */
+  animation: tableFadeIn 0.5s forwards;
+}
+
+.admin-table tbody tr:hover {
+  background: #fdfdfd;
+}
+
+/* Status dropdown */
+.status-select {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+select[data-val="Pending"] { background: #ffeeba; border-color: #856404; color: #856404; }
+select[data-val="Preparing"] { background: #b8daff; border-color: #004085; color: #004085; }
+select[data-val="Out for Delivery"] { background: #c3e6cb; border-color: #155724; color: #155724; }
+select[data-val="Delivered"] { background: #d4edda; border-color: #155724; color: #155724; }
+
+/* Customer block */
+.customer-info p { margin-bottom: 3px; font-size: 0.9rem; }
+.customer-info strong { font-weight: 600; }
+
+/* Item block */
+.items-list {
+  font-size: 0.85rem;
+  color: #555;
+  background: #f9f9f9;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  max-width: 250px;
+}
+
+/* User Account Orders row */
+.expand-btn {
+  background: var(--bg-subtle);
+  color: var(--primary);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--primary);
+}
+
+.expand-btn:hover { background: var(--primary); color: #fff; }
+
+.expanded-row {
+  background: #fafafa;
+}
+
+.expanded-row td {
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.hidden-row { display: none; }
+
+/* Staggered Row Animation */
+@keyframes tableFadeIn {
+  to { opacity: 1; }
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  margin-bottom: 15px;
+}
+
+.error-msg {
+  color: red; margin-bottom: 15px; font-size: 0.9rem;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 1000px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .dashboard-content {
+    padding: 0 12px;
+    margin: 20px auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-header .header-container {
+    padding: 0 12px;
+  }
+
+  .admin-header .logo-text {
+    font-size: 1.1rem;
+  }
+
+  .admin-tabs {
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .admin-tab {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    white-space: nowrap;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .items-list {
+    max-width: 160px;
+    white-space: normal;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+    margin: 0 12px;
+  }
+
+  .login-header h2 {
+    font-size: 1.4rem;
+  }
+}

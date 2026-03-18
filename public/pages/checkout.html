@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | AA-Burgers</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/checkout.css">
+</head>
+<body class="page-fade-in secondary-bg">
+
+  <header class="simple-header">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <span class="logo-text">AA-Burgers</span>
+      </a>
+      <a href="/" class="back-link">← Continue Shopping</a>
+    </div>
+  </header>
+
+  <main class="checkout-container">
+    
+    <!-- Empty Cart Section -->
+    <div id="empty-cart-view" class="hidden text-center">
+      <div class="empty-illustration">
+        <!-- // INSERT: Empty cart illustration -->
+        <span>🛒</span>
+      </div>
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added anything yet.</p>
+      <a href="/" class="btn-primary mt-20 inline-block">Browse Menu</a>
+    </div>
+
+    <!-- Active Cart Section -->
+    <div id="checkout-view" class="checkout-grid hidden">
+      
+      <!-- Left: Cart Summary -->
+      <div class="cart-summary-section">
+        <h2>Order Summary</h2>
+        <div class="cart-items" id="cart-items-list">
+          <!-- Items injected via JS -->
+        </div>
+        <div class="cart-total-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">Rs. 0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Delivery</span>
+          <span>Rs. 150</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total</span>
+          <span id="cart-total">Rs. 0</span>
+        </div>
+      </div>
+
+      <!-- Right: Checkout Details -->
+      <div class="checkout-details-section">
+        
+        <!-- Logged In View -->
+        <div id="logged-in-checkout" class="glass-card hidden">
+          <h3>Your Details</h3>
+          <div class="readonly-details">
+            <p><strong>Name:</strong> <span id="user-name"></span></p>
+            <p><strong>Phone:</strong> <span id="user-phone"></span></p>
+            <p><strong>Address:</strong> <span id="user-address"></span></p>
+          </div>
+          <button id="place-order-user" class="btn-primary full-width mt-20 submit-order-btn">
+            <span class="btn-text">Place Order</span>
+            <span class="loader hidden"></span>
+          </button>
+        </div>
+
+        <!-- Guest View -->
+        <div id="guest-checkout" class="glass-card hidden">
+          <h3>Delivery Details</h3>
+          <p class="guest-hint">
+            The process will be faster if you <a href="/auth" class="text-primary">create an account</a>.
+          </p>
+          
+          <form id="guest-order-form">
+            <div class="form-group">
+              <label>Full Name <span class="required">*</span></label>
+              <input type="text" id="g-name" required>
+            </div>
+            <div class="form-group">
+              <label>Email Address <span class="optional">(Optional)</span></label>
+              <input type="email" id="g-email">
+            </div>
+            <div class="form-group">
+              <label>Phone Number <span class="required">*</span></label>
+              <input type="text" id="g-phone" required pattern="\\d{10,11}">
+            </div>
+            <div class="form-group">
+              <label>Alternative Phone <span class="optional">(Optional)</span></label>
+              <input type="text" id="g-alt-phone">
+            </div>
+            <div class="form-group">
+              <label>Delivery Address <span class="required">*</span></label>
+              <textarea id="g-address" rows="3" required></textarea>
+            </div>
+            
+            <p class="error-msg" id="checkout-error"></p>
+            
+            <button type="submit" id="place-order-guest" class="btn-primary full-width mt-20 submit-order-btn">
+              <span class="btn-text">Place Order</span>
+              <span class="loader hidden"></span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Success Overlay -->
+  <div class="success-overlay hidden" id="success-overlay">
+    <div class="success-content">
+      <h1 class="bounce-in">Your order has been placed! 🎉</h1>
+      <p class="est-time">Est. time: 35 minutes</p>
+      <div class="order-number-box">
+        Order <span id="success-order-num" class="text-primary">#AA-XXXXXX</span>
+      </div>
+      <a href="/" class="btn-primary mt-20 inline-block">Back to Home</a>
+    </div>
+  </div>
+
+  <script src="/js/checkout.js"></script>
+</body>
+</html>

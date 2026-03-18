@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap');
+
+:root {
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+
+  /* Color Theme */
+  --primary: #FF6B00; /* vivid orange */
+  --secondary: #FFFFFF; /* white */
+  --accent: #CC1A00; /* deep red */
+  --bg-dark: #111111; /* dark backgrounds */
+  --bg-subtle: #FFF5EE; /* warm off-white */
+  --text-dark: #FFFFFF; /* text on dark */
+  --text-light: #1A1A1A; /* text on light */
+  
+  /* Utilities */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 50px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+  --transition: all 0.3s ease;
+}
+
+/* Reset and Global Typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-light);
+  background-color: var(--secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.title, .nav-item, .nav-link, .tab-btn, .logo-text, .btn-primary, .btn-accent {
+  font-family: var(--font-heading);
+}
+
+p, span, label, input, textarea, select, .desc, .description, .footer, .footer-text {
+  font-family: var(--font-body);
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+}
+
+/* Links and Buttons */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+button {
+  font-family: var(--font-heading);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: transparent;
+  transition: var(--transition);
+}
+
+button:focus, input:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,107,0,0.3);
+}
+
+/* Global Utility Classes */
+.btn-primary {
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #e65a00;
+  transform: scale(1.02);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--secondary);
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: #b31700;
+  transform: scale(1.02);
+}
+
+/* Toast Notification Base */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: -300px;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  padding: 16px 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 9999;
+}
+
+.toast.show {
+  right: 20px;
+}
+
+/* Fade In Animation for Pages */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: #eee;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to { background-position-x: -200%; }
+}

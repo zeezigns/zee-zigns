@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | AA-Burgers</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="page-fade-in admin-bg">
+
+  <!-- Admin Login Modal Overlay -->
+  <div id="admin-login-overlay" class="login-overlay hidden">
+    <div class="login-card">
+      <div class="login-header">
+        <h2>Admin Gateway</h2>
+        <p>Restricted Access</p>
+      </div>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="admin-user" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="admin-pass" required>
+        </div>
+        <p id="admin-error" class="error-msg"></p>
+        <button type="submit" class="btn-primary full-width" id="admin-login-btn">
+          <span class="btn-text">Log In</span>
+          <span class="loader hidden"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Dashboard (Hidden until auth'd) -->
+  <div id="admin-dashboard" class="hidden">
+    <header class="admin-header">
+      <div class="header-container">
+        <div class="logo">
+          <span class="logo-text">AA-Burgers Admin</span>
+        </div>
+        <button id="admin-logout-btn" class="btn-primary">Log Out</button>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-target="orders-section">Manage Orders</button>
+        <button class="admin-tab" data-target="accounts-section">Customer Accounts</button>
+      </div>
+
+      <!-- Orders Section -->
+      <section id="orders-section" class="tab-section active">
+        <div class="section-header">
+          <h2>All Orders</h2>
+          <input type="text" id="search-orders" class="search-input" placeholder="Search by name, email, or order #...">
+        </div>
+        
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <!-- JS Injected -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Accounts Section -->
+      <section id="accounts-section" class="tab-section">
+        <div class="section-header">
+          <h2>Registered Accounts</h2>
+          <input type="text" id="search-accounts" class="search-input" placeholder="Search by name, email, or phone...">
+        </div>
+        
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Joined Date</th>
+                <th>Name</th>
+                <th>Email / Phone</th>
+                <th>Address</th>
+                <th>Total Orders</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-tbody">
+              <!-- JS Injected -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

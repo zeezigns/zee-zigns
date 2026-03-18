@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up | AA-Burgers</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="page-fade-in auth-body">
+
+  <a href="/" class="back-link">← Back to Home</a>
+
+  <!-- // INSERT: Background image for auth page — subtle restaurant ambiance -->
+  <div class="auth-bg"></div>
+
+  <div class="auth-container">
+    <div class="glass-card" id="auth-card">
+      
+      <!-- Toggle Switcher -->
+      <div class="toggle-container">
+        <button class="toggle-btn active" id="toggle-signup">Sign Up</button>
+        <button class="toggle-btn" id="toggle-login">Log In</button>
+      </div>
+
+      <div class="forms-wrapper">
+        <!-- Sign Up Form -->
+        <form id="signup-form" class="auth-form active-form">
+          <div class="form-group">
+            <label for="reg-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="reg-name" required placeholder="John Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-email">Email Address <span class="required">*</span></label>
+            <input type="email" id="reg-email" required placeholder="john@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-phone">Phone Number (Password) <span class="required">*</span></label>
+            <input type="text" id="reg-phone" required placeholder="03001234567" pattern="\d{10,11}" title="Must be 10 or 11 digits">
+            <small class="hint">This will be used to log in.</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-address">Delivery Address <span class="required">*</span></label>
+            <textarea id="reg-address" rows="3" required placeholder="House 123, Street 4..."></textarea>
+          </div>
+
+          <p class="error-msg" id="signup-error"></p>
+
+          <button type="submit" class="btn-primary full-width submit-btn">
+            <span class="btn-text">Create Account</span>
+            <span class="loader hidden"></span>
+          </button>
+        </form>
+
+        <!-- Log In Form -->
+        <form id="login-form" class="auth-form disabled-form">
+          <div class="form-group">
+            <label for="login-email">Email Address <span class="required">*</span></label>
+            <input type="email" id="login-email" required placeholder="john@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="login-phone">Phone Number (Password) <span class="required">*</span></label>
+            <input type="text" id="login-phone" required placeholder="03001234567">
+          </div>
+
+          <p class="error-msg" id="login-error"></p>
+
+          <button type="submit" class="btn-primary full-width submit-btn">
+            <span class="btn-text">Log In</span>
+            <span class="loader hidden"></span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>
