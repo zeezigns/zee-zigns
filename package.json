@@ -1,7 +1,7 @@
 {
-  "name": "aa-burgers",
+  "name": "zee-zigns",
   "version": "1.0.0",
-  "description": "AA-Burgers Full Stack Demo",
+  "description": "Zee-Zigns Full Stack Demo",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

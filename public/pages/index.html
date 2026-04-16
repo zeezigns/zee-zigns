@@ -3,96 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AA-Burgers | Fresh. Hot. Bold.</title>
+  <title>Zee-Zigns | Premium Streetwear</title>
+  <meta name="description" content="Zee-Zigns - Premium custom-designed T-shirts. Anime, Marvel, DC, Hogwarts, Graphics and Cars collections.">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/home.css">
 </head>
 <body class="page-fade-in">
 
-  <!-- Header Section -->
+  <!-- Header -->
   <header class="header" id="main-header">
     <div class="header-container">
       <div class="logo">
-        <!-- // INSERT: AA-Burgers logo image here -->
-        <span class="logo-text">AA-Burgers</span>
+        <img src="/images/zee-zigns-logo-transparent.png" alt="Zee-Zigns" style="height:100px; width:auto; margin:-20px 0; object-fit:contain;">
       </div>
-      
-      <!-- Mobile Menu Toggle -->
-      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle menu">
-        ☰
-      </button>
+
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
 
       <div class="header-right" id="header-right-actions">
-        <!-- Injected via JS based on session: 
-             Login / Sign-up OR user email linking to account -->
+        <!-- Injected via JS based on session -->
         <a href="/auth" class="btn-primary" id="auth-link">Login / Sign Up</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Slider Section -->
+  <!-- Hero Slider -->
   <section class="hero-slider" id="hero-slider">
-    <div class="slide active">
-      <!-- // INSERT: Hero banner image 1 — recommended size 1920x600px -->
-      <div class="slide-overlay">
-        <h2>Fresh. Hot. Bold.</h2>
-        <p>The best smash burgers in Karachi.</p>
-      </div>
-    </div>
-    <div class="slide">
-      <!-- // INSERT: Hero banner image 2 — recommended size 1920x600px -->
-      <div class="slide-overlay">
-        <h2>Midnight Deals Now Live</h2>
-        <p>Satisfy your late-night cravings.</p>
-      </div>
-    </div>
-    <div class="slide">
-      <!-- // INSERT: Hero banner image 3 — recommended size 1920x600px -->
-      <div class="slide-overlay">
-        <h2>Family Feasts</h2>
-        <p>Bundle up and save big.</p>
-      </div>
+    <div id="slider-content">
+      <!-- Slides injected via JS -->
     </div>
 
-    <!-- Slider Navigation -->
     <button class="slider-btn left" id="slider-prev">❮</button>
     <button class="slider-btn right" id="slider-next">❯</button>
+    
     <div class="slider-dots" id="slider-dots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+      <!-- Dots injected via JS -->
     </div>
   </section>
 
-  <!-- Location Bar Section -->
-  <section class="location-bar-container">
-    <div class="location-bar">
-      <button class="location-btn" id="track-location-btn">
-        📍 Track My Location
-      </button>
-      <div class="location-dropdown-wrapper">
-        <button class="location-btn" id="select-area-btn">
-          Select Area ▾
-        </button>
-        <div class="location-dropdown" id="location-dropdown">
-          <ul id="area-list">
-            <!-- Areas populated via JS -->
-          </ul>
-        </div>
-      </div>
+  <!-- Shipping Banner (replaces location bar) -->
+  <section class="shipping-banner">
+    <div class="shipping-banner-inner">
+      <span class="icon">🚚</span>
+      <span>Nationwide shipping across Pakistan • <strong>DM to order</strong> on <strong>@zee_zigns</strong></span>
     </div>
-    <div id="location-status" class="location-status"></div>
   </section>
 
-  <!-- Category Navigation Bar -->
+  <!-- Category Navigation -->
   <nav class="category-nav" id="category-nav">
     <div class="nav-container">
       <div class="tabs-scroll" id="category-tabs">
-        <button class="tab-btn active" data-category="burgers">Burgers</button>
-        <button class="tab-btn" data-category="drinks">Drinks</button>
-        <button class="tab-btn" data-category="fries">Fries</button>
-        <button class="tab-btn" data-category="combos">Family Combo</button>
-        <button class="tab-btn" data-category="midnight">Midnight Deals</button>
+        <button class="tab-btn active" data-category="anime">Anime</button>
+        <button class="tab-btn" data-category="marvel">Marvel</button>
+        <button class="tab-btn" data-category="dc">DC</button>
+        <button class="tab-btn" data-category="hogwarts">Hogwarts</button>
+        <button class="tab-btn" data-category="cars">Cars</button>
+        <button class="tab-btn" data-category="graphics">Graphics</button>
       </div>
       <a href="/checkout" class="cart-btn" id="cart-btn">
         🛒 Cart (<span id="cart-count">0</span>)
@@ -100,33 +65,32 @@
     </div>
   </nav>
 
-  <!-- Main Store / Products Section -->
+  <!-- Products Section -->
   <main class="store-section" id="store-section">
     <div class="products-grid" id="products-grid">
-      <!-- Products dynamically generated via JS -->
+      <!-- Products injected via JS -->
     </div>
   </main>
 
-  <!-- Product Detail Modal (Hidden by default) -->
+  <!-- Product Detail Modal -->
   <div class="modal-overlay" id="product-modal-overlay">
     <div class="modal-content">
       <button class="modal-close" id="modal-close">×</button>
       <div class="modal-image-container">
-        <!-- // INSERT: product image (dynamic) -->
         <div class="modal-placeholder-image" id="modal-image"></div>
       </div>
       <div class="modal-details">
         <h3 id="modal-title">Product Name</h3>
         <p id="modal-description" class="modal-desc">Description</p>
         <p class="modal-price" id="modal-price">Rs. 0</p>
-        
+
         <div class="modal-options" id="modal-options">
           <!-- Options injected via JS -->
         </div>
 
         <div class="modal-actions">
           <div class="quantity-selector">
-            <button class="qty-btn" id="qty-minus">-</button>
+            <button class="qty-btn" id="qty-minus">−</button>
             <span id="qty-value">1</span>
             <button class="qty-btn" id="qty-plus">+</button>
           </div>
@@ -136,32 +100,36 @@
     </div>
   </div>
 
-  <!-- Footer Section -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
-        <h4>Our Branches</h4>
-        <ul class="branch-list">
-          <li><strong>Clifton:</strong> Block 5, Near Schön Circle</li>
-          <li><strong>DHA:</strong> Phase 6, Bukhari Commercial</li>
-          <li><strong>Gulshan-e-Iqbal:</strong> Block 4, NIPA Chaurangi</li>
-          <li><strong>North Nazimabad:</strong> Block H, Five Star Chaurangi</li>
-          <li><strong>Bahria Town:</strong> Precinct 10, Theme Park Road</li>
-        </ul>
+        <h4>Zee-Zigns</h4>
+        <div class="footer-info-item">
+          <span>📍</span>
+          <span>Karachi, Pakistan <br><em style="color:#666;font-size:0.82rem">Digital-first brand — we ship nationwide</em></span>
+        </div>
+        <div class="footer-info-item">
+          <span>✉️</span>
+          <span><a href="mailto:zeezignss@gmail.com" style="color:inherit;text-decoration:none;">zeezignss@gmail.com</a></span>
+        </div>
       </div>
+
       <div class="footer-right">
-        <h4>Contact Us</h4>
-        <p>📞 021-111-222-333</p>
-        <p>✉️ hello@aaburgers.pk</p>
-        <div class="social-links">
-          <span>fb</span>
-          <span>ig</span>
-          <span>tw</span>
+        <h4>Order Online</h4>
+        <p>Slide into our DMs to place an order, ask about sizing, or request a custom design!</p>
+        <a class="insta-link" href="https://instagram.com/zee_zigns" target="_blank" rel="noopener">
+          📸 @zee_zigns
+        </a>
+        <p class="dm-order-hint">💬 DM us to place your order directly!</p>
+
+        <div class="social-links" style="margin-top: 16px;">
+          <a href="https://instagram.com/zee_zigns" target="_blank" title="Instagram">IG</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 AA-Burgers. All rights reserved.</p>
+      <p>© 2025 Zee-Zigns. All rights reserved. | Made for the Gen-Z streetwear scene 🖤</p>
     </div>
   </footer>
 

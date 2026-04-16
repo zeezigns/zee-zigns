@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Simple JSON file based database since native SQLite builds are failing
-const dbPath = path.resolve(__dirname, 'aaburgers.json');
+const dbPath = path.resolve(__dirname, 'zeezigns.json');
 
 // Initialize database file
 if (!fs.existsSync(dbPath)) {

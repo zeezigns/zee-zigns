@@ -4,7 +4,7 @@ const db = require('../database');
 
 // IMPORTANT: Change these credentials before going live. Ideally move to .env file.
 const ADMIN_USERNAME = process.env.ADMIN_USER || 'asburgers_admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASS || 'Admin@AA2025!';
+const ADMIN_PASSWORD = process.env.ADMIN_PASS || 'Admin@ZZ2025!';
 
 // Check session
 router.get('/session', (req, res) => {
@@ -71,7 +71,7 @@ router.patch('/orders/:id/status', requireAdmin, (req, res) => {
   const { status } = req.body;
   const orderId = req.params.id;
   
-  const validStatuses = ['Pending', 'Preparing', 'Out for Delivery', 'Delivered'];
+  const validStatuses = ['Pending', 'Preparing', 'Out for Delivery', 'Delivered', 'Cancelled'];
   if (!validStatuses.includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
   }
@@ -88,6 +88,26 @@ router.patch('/orders/:id/status', requireAdmin, (req, res) => {
     db.write(data);
     
     res.json({ success: true, status });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// Delete an order permanently
+router.delete('/orders/:id', requireAdmin, (req, res) => {
+  const orderId = req.params.id;
+  try {
+    const data = db.read();
+    const orderIndex = data.orders.findIndex(o => o.id === orderId || o.id === parseInt(orderId));
+    
+    if (orderIndex === -1) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    
+    data.orders.splice(orderIndex, 1);
+    db.write(data);
+    res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });

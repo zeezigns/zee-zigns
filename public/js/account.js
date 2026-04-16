@@ -161,7 +161,7 @@ function renderOrders(orders) {
       hour: '2-digit', minute: '2-digit'
     });
     
-    const statusClass = order.status.replace(/\\s+/g, ''); // Remove spaces for classes
+    const statusClass = order.status.split(' ')[0].toLowerCase(); // E.g., pending, preparing, cancelled
 
     const card = document.createElement('div');
     card.className = 'order-card';
@@ -174,7 +174,7 @@ function renderOrders(orders) {
         ${summaryText}
       </div>
       <div class="order-footer">
-        <span class="order-total">Rs. ${order.total_price}</span>
+        <span class="order-total">Rs. ${parseFloat(order.total_price).toLocaleString()}</span>
         <span class="order-status status-${statusClass}">${order.status}</span>
       </div>
     `;

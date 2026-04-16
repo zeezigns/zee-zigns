@@ -1,11 +1,12 @@
 .dashboard-bg {
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-dark);
   min-height: 100vh;
 }
 
 .dash-header {
-  background: var(--secondary);
-  box-shadow: var(--shadow-sm);
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,245,255,0.15);
   padding: 15px 0;
 }
 
@@ -43,10 +44,11 @@
 }
 
 .dash-card {
-  background: var(--secondary);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,245,255,0.1);
+  backdrop-filter: blur(10px);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 30px;
+  padding: 28px;
   height: max-content;
 }
 
@@ -68,14 +70,14 @@
   display: flex;
   align-items: flex-start;
   padding-bottom: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .detail-label {
   width: 130px;
   font-weight: 600;
-  color: #555;
-  font-size: 0.9rem;
+  color: var(--primary);
+  font-size: 0.88rem;
   padding-top: 5px;
 }
 
@@ -96,13 +98,14 @@
   padding: 8px 12px;
   border: 1px solid var(--primary);
   border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.4);
+  color: var(--text-light);
   font-family: inherit;
   font-size: 0.95rem;
 }
-
 .detail-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(0,245,255,0.25);
 }
 
 .action-container {
@@ -125,15 +128,15 @@
 }
 
 .order-card {
-  border: 1px solid #eee;
+  border: 1px solid rgba(0,245,255,0.1);
+  background: rgba(0,0,0,0.3);
   border-radius: var(--radius-md);
-  padding: 20px;
+  padding: 18px;
   transition: var(--transition);
 }
-
 .order-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: #ddd;
+  border-color: rgba(0,245,255,0.3);
+  box-shadow: 0 4px 20px rgba(0,245,255,0.08);
 }
 
 .order-header {
@@ -163,8 +166,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px dashed #eee;
-  padding-top: 15px;
+  border-top: 1px dashed rgba(255,255,255,0.08);
+  padding-top: 14px;
 }
 
 .order-total {
@@ -180,10 +183,10 @@
   background: #eee;
 }
 
-.status-Pending { background: #ffeeba; color: #856404; }
-.status-Preparing { background: #b8daff; color: #004085; }
-.status-Out { background: #c3e6cb; color: #155724; }
-.status-Delivered { background: #d4edda; color: #155724; }
+.status-Pending { background: rgba(255,220,0,0.1); color: #f0c040; border:1px solid #f0c040; }
+.status-Preparing { background: rgba(0,180,255,0.1); color: #00b4ff; border:1px solid #00b4ff; }
+.status-Out { background: rgba(150,100,255,0.1); color: #9664ff; border:1px solid #9664ff; }
+.status-Delivered { background: rgba(0,210,100,0.1); color: #00d280; border:1px solid #00d280; }
 
 .empty-orders {
   text-align: center;
@@ -252,4 +255,42 @@
   .dash-header .logo-text {
     font-size: 1.1rem;
   }
+}
+
+/* ---- Order Status Badges ---- */
+.order-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000; /* Always dark/black text for readability */
+}
+
+.status-pending {
+  background: #FFD600;
+  color: #000;
+}
+
+.status-preparing {
+  background: #FF9800;
+  color: #000;
+}
+
+/* "Out for Delivery" — first word is "out" */
+.status-out {
+  background: #29B6F6;
+  color: #000;
+}
+
+.status-delivered {
+  background: #66BB6A;
+  color: #000;
+}
+
+.status-cancelled {
+  background: #EF5350;
+  color: #fff; /* White text on red for readability */
 }

@@ -1,32 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap');
+
+/* LOCAL CUSTOM FONTS */
+@font-face {
+  font-family: 'Rugles';
+  src: url('/fonts/rugles-font/RuglesDemo-nAdJg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Oh My Notes';
+  src: url('/fonts/oh-my-notes-font/Ohmynotes-p7WDK.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   /* Typography */
-  --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Nunito', sans-serif;
+  --font-heading: 'Rugles', 'Poppins', sans-serif;
+  --font-subheading: 'Rugles', 'Poppins', sans-serif;
+  --font-body: 'Oh My Notes', 'Nunito', sans-serif;
 
-  /* Color Theme */
-  --primary: #FF6B00; /* vivid orange */
-  --secondary: #FFFFFF; /* white */
-  --accent: #CC1A00; /* deep red */
-  --bg-dark: #111111; /* dark backgrounds */
-  --bg-subtle: #FFF5EE; /* warm off-white */
-  --text-dark: #FFFFFF; /* text on dark */
-  --text-light: #1A1A1A; /* text on light */
+
+  /* Color Theme — Zee-Zigns Dark Streetwear (Professional) */
+  --primary: #00F5FF;          /* Bright cyan accent - used SPARINGLY */
+  --bg-dark: #000000;          /* Jet black base */
+  --secondary: #0a0a0a;        /* Near-black panels */
+  --bg-subtle: #121212;        /* Dark surface */
+  --text-light: #FFFFFF;       /* Snow white text */
+  --text-dark: #000000;        /* Black text */
+  --accent-glow: rgba(255, 255, 255, 0.1); /* Changed from cyan to subtle white glow */
+
+  /* Glass effect (Less cyan, cleaner white frost) */
+  --glass-bg: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.12);
   
   /* Utilities */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-pill: 50px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+  --shadow-cyan: 0 4px 24px rgba(0,245,255,0.18);
+  --shadow-dark: 0 4px 20px rgba(0,0,0,0.6);
   --transition: all 0.3s ease;
 }
 
-/* Reset and Global Typography */
-* {
+/* Reset and Global */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -35,33 +56,37 @@
 body {
   font-family: var(--font-body);
   color: var(--text-light);
-  background-color: var(--secondary);
+  background-color: var(--bg-dark);
   line-height: 1.6;
   overflow-x: hidden;
+  font-size: 1.15rem; /* Oh My Notes tends to render smaller, slightly boosting base size */
 }
 
-h1, h2, h3, h4, h5, h6,
-.title, .nav-item, .nav-link, .tab-btn, .logo-text, .btn-primary, .btn-accent {
+h1, 
+.title {
   font-family: var(--font-heading);
+  letter-spacing: 2px;
+}
+
+h2, h3, h4, h5, h6,
+.nav-item, .nav-link, .tab-btn, .logo-text, .btn-primary, .btn-accent {
+  font-family: var(--font-subheading);
+  letter-spacing: 1px;
 }
 
 p, span, label, input, textarea, select, .desc, .description, .footer, .footer-text {
   font-family: var(--font-body);
 }
 
-/* Custom Webkit Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-subtle);
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb {
   background: var(--primary);
   border-radius: var(--radius-pill);
 }
 
-/* Links and Buttons */
+/* Links */
 a {
   text-decoration: none;
   color: inherit;
@@ -77,74 +102,93 @@ button {
   transition: var(--transition);
 }
 
-button:focus, input:focus, textarea:focus {
+button:focus, input:focus, textarea:focus, select:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255,107,0,0.3);
+  box-shadow: 0 0 0 2px var(--primary);
 }
 
-/* Global Utility Classes */
+/* == GLASSMORPHISM BASE == */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dark);
+}
+
+/* == BUTTONS == */
 .btn-primary {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--text-light); /* Professional White */
+  color: var(--text-dark);
   padding: 10px 24px;
   border-radius: var(--radius-pill);
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 2px solid var(--text-light);
+  transition: var(--transition);
 }
-
 .btn-primary:hover {
-  background: #e65a00;
+  background: transparent;
+  color: var(--text-light);
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
   transform: scale(1.02);
 }
 
 .btn-accent {
-  background: var(--accent);
-  color: var(--secondary);
+  background: transparent;
+  color: var(--primary);
   padding: 10px 24px;
   border-radius: var(--radius-pill);
-  font-weight: 600;
+  font-weight: 700;
+  border: 2px solid var(--primary);
 }
-
 .btn-accent:hover {
-  background: #b31700;
-  transform: scale(1.02);
+  background: var(--primary);
+  color: var(--text-dark);
+  box-shadow: 0 0 20px rgba(0,245,255,0.3);
 }
 
-/* Toast Notification Base */
+/* == TOAST == */
 .toast {
   position: fixed;
   bottom: 20px;
-  right: -300px;
-  background: var(--bg-dark);
-  color: var(--text-dark);
+  right: -320px;
+  background: var(--secondary);
+  color: var(--text-light);
+  border: 1px solid var(--primary);
   padding: 16px 24px;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-cyan);
   transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 9999;
+  font-family: var(--font-body);
 }
+.toast.show { right: 20px; }
 
-.toast.show {
-  right: 20px;
-}
-
-/* Fade In Animation for Pages */
+/* == FADE ANIMATION == */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+.page-fade-in { animation: fadeIn 0.35s ease; }
 
-.page-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Skeleton Loading */
+/* == SKELETON == */
 .skeleton {
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background: linear-gradient(110deg, #1a1a1a 8%, #2a2a2a 18%, #1a1a1a 33%);
   background-size: 200% 100%;
   animation: 1.5s shine linear infinite;
+  border-radius: 6px;
 }
+@keyframes shine { to { background-position-x: -200%; } }
 
-@keyframes shine {
-  to { background-position-x: -200%; }
-}
+/* Utilities */
+.hidden { display: none !important; }
+.text-primary { color: var(--primary); }
+.text-success { color: #2ecc71; }
+.text-danger { color: #e74c3c; }
+.mt-20 { margin-top: 20px; }
+.inline-block { display: inline-block; }
+.text-center { text-align: center; }
+.full-width { width: 100%; }

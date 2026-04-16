@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Portal | AA-Burgers</title>
+  <title>Admin Portal | Zee-Zigns</title>
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/admin.css">
 </head>
@@ -14,16 +14,16 @@
     <div class="login-card">
       <div class="login-header">
         <h2>Admin Gateway</h2>
-        <p>Restricted Access</p>
+        <p>Restricted Access — Zee-Zigns HQ</p>
       </div>
       <form id="admin-login-form">
         <div class="form-group">
           <label>Username</label>
-          <input type="text" id="admin-user" required>
+          <input type="text" id="admin-user" required placeholder="admin">
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="admin-pass" required>
+          <input type="password" id="admin-pass" required placeholder="••••••••">
         </div>
         <p id="admin-error" class="error-msg"></p>
         <button type="submit" class="btn-primary full-width" id="admin-login-btn">
@@ -34,12 +34,12 @@
     </div>
   </div>
 
-  <!-- Main Dashboard (Hidden until auth'd) -->
+  <!-- Main Dashboard (hidden until auth'd) -->
   <div id="admin-dashboard" class="hidden">
     <header class="admin-header">
       <div class="header-container">
         <div class="logo">
-          <span class="logo-text">AA-Burgers Admin</span>
+          <img src="/images/zee-zigns-logo-transparent.png" alt="Zee-Zigns" style="height:100px;width:auto;margin:-20px 0;object-fit:contain;">
         </div>
         <button id="admin-logout-btn" class="btn-primary">Log Out</button>
       </div>
@@ -48,8 +48,9 @@
     <main class="dashboard-content">
       <!-- Tabs -->
       <div class="admin-tabs">
-        <button class="admin-tab active" data-target="orders-section">Manage Orders</button>
-        <button class="admin-tab" data-target="accounts-section">Customer Accounts</button>
+        <button class="admin-tab active" data-target="orders-section">📦 Manage Orders</button>
+        <button class="admin-tab" data-target="accounts-section">👥 Customer Accounts</button>
+        <button class="admin-tab" data-target="store-section">🛍️ Store Manager</button>
       </div>
 
       <!-- Orders Section -->
@@ -58,7 +59,6 @@
           <h2>All Orders</h2>
           <input type="text" id="search-orders" class="search-input" placeholder="Search by name, email, or order #...">
         </div>
-        
         <div class="table-container">
           <table class="admin-table">
             <thead>
@@ -69,6 +69,7 @@
                 <th>Items</th>
                 <th>Total</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="orders-tbody">
@@ -84,17 +85,16 @@
           <h2>Registered Accounts</h2>
           <input type="text" id="search-accounts" class="search-input" placeholder="Search by name, email, or phone...">
         </div>
-        
         <div class="table-container">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Joined Date</th>
+                <th>Joined</th>
                 <th>Name</th>
                 <th>Email / Phone</th>
                 <th>Address</th>
-                <th>Total Orders</th>
+                <th>Orders</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -105,7 +105,302 @@
         </div>
       </section>
 
+      <!-- Store Manager Section -->
+      <section id="store-section" class="tab-section">
+        <div class="section-header">
+          <h2>Store Manager</h2>
+        </div>
+
+        <div class="store-manager-grid">
+          
+          <!-- Hero Slider Manager -->
+          <div class="store-panel" style="grid-column: 1 / -1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3>🖼️ Hero Slider Manager</h3>
+              <button class="btn-primary" id="add-hero-btn" style="padding: 6px 14px; font-size:0.85rem;">Add New Slide</button>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Title & Subtitle</th>
+                    <th>Sizing</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="hero-slider-tbody">
+                  <!-- JS Injected Slider Items -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Existing Catalog List -->
+          <div class="store-panel" style="grid-column: 1 / -1; max-height: 500px; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3>📦 Existing Catalog</h3>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="catalog-tbody">
+                  <!-- JS Injected Catalog Items -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Discount Manager -->
+          <div class="store-panel" style="grid-column: 1 / -1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+              <h3>🏷️ Discount Manager</h3>
+              <div id="discount-active-badge" style="display:none;">
+                <span style="background:rgba(0,210,100,0.12); border:1px solid rgba(0,210,100,0.4); color:#00d280; padding:5px 16px; border-radius:20px; font-size:0.78rem; font-weight:700; letter-spacing:0.5px;">● DISCOUNTS ACTIVE</span>
+              </div>
+            </div>
+
+            <!-- Live Active Discounts List -->
+            <div id="active-discounts-list" style="margin-bottom:18px;"></div>
+
+            <!-- Apply New Discount Form -->
+            <div class="discount-form-row">
+              <div class="form-group">
+                <label>Scope</label>
+                <div class="discount-scope-radio">
+                  <label><input type="radio" name="d-scope" value="store" id="scope-store" checked> Whole Store</label>
+                  <label><input type="radio" name="d-scope" value="category" id="scope-category"> Specific Category</label>
+                </div>
+              </div>
+              <div class="form-group" id="d-cat-group" style="display:none;">
+                <label>Category</label>
+                <select id="d-category">
+                  <option value="anime">Anime</option>
+                  <option value="marvel">Marvel</option>
+                  <option value="dc">DC</option>
+                  <option value="hogwarts">Hogwarts</option>
+                  <option value="cars">Cars</option>
+                  <option value="graphics">Graphics</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Discount Type</label>
+                <select id="d-type">
+                  <option value="flat">Flat Amount (Rs. off each item)</option>
+                  <option value="percent">Percentage (% off each item)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Value</label>
+                <input type="number" id="d-value" placeholder="e.g. 250" min="0" step="1">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+              <button class="btn-primary" id="apply-discount-btn" style="padding:9px 24px;">✓ Apply Discount</button>
+              <button class="btn-accent" id="remove-discounts-btn" style="padding:9px 24px; border-color:#ff5b5b; color:#ff5b5b;">✕ Remove All Discounts</button>
+            </div>
+            <p id="discount-feedback-msg" style="margin-top:12px; font-size:0.85rem; min-height:20px;"></p>
+          </div>
+
+          <!-- Add New Product Form -->
+          <div class="store-panel">
+            <h3>➕ Add New Product</h3>
+            <form id="add-product-form" class="add-item-form">
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="new-product-name" placeholder="e.g. Naruto — Sage Mode" required>
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="new-product-category" required>
+                  <option value="anime">Anime</option>
+                  <option value="marvel">Marvel</option>
+                  <option value="dc">DC</option>
+                  <option value="hogwarts">Hogwarts</option>
+                  <option value="cars">Cars</option>
+                  <option value="graphics">Graphics</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Price (Rs.)</label>
+                <input type="number" id="new-product-price" value="2500" min="0" required>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea id="new-product-desc" rows="3" placeholder="Short description of the design..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Image Filename</label>
+                <input type="text" id="new-product-img" placeholder="e.g. Naruto Sage Mode.png">
+                <small style="color:#666;font-size:0.78rem;margin-top:4px;display:block;">File must be uploaded to /public/images/ folder manually.</small>
+              </div>
+              <button type="submit" class="btn-primary" style="margin-top:8px;">Add to Catalog</button>
+              <p id="add-product-msg" style="margin-top:10px;font-size:0.85rem;"></p>
+            </form>
+          </div>
+
+          <!-- Notification Settings -->
+          <div class="store-panel">
+            <h3>🔔 Order Notifications</h3>
+            <p style="color:#888;font-size:0.85rem;margin-bottom:18px;">Choose how you want to be notified when a new order is placed:</p>
+
+            <div class="notif-option">
+              <span class="notif-option-icon">📱</span>
+              <div>
+                <h4>WhatsApp via CallMeBot <span class="recommended-badge">RECOMMENDED</span></h4>
+                <p>
+                  Free & instant. Set up a WhatsApp API key at
+                  <a href="https://www.callmebot.com/blog/free-api-whatsapp-messages/" target="_blank">callmebot.com</a>,
+                  then add your phone number and API key in the server's <code style="color:var(--primary)">.env</code> file as
+                  <code style="color:var(--primary)">WA_PHONE</code> and <code style="color:var(--primary)">WA_KEY</code>.
+                  The server will ping your WhatsApp on every new order.
+                </p>
+              </div>
+            </div>
+
+            <div class="notif-option">
+              <span class="notif-option-icon">✉️</span>
+              <div>
+                <h4>Email (Nodemailer + Gmail)</h4>
+                <p>
+                  Send yourself an email alert on each order via Gmail.
+                  Add <code style="color:var(--primary)">GMAIL_USER</code> and <code style="color:var(--primary)">GMAIL_PASS</code>
+                  (App Password) to your <code style="color:var(--primary)">.env</code> file — the server will auto-email you.
+                </p>
+              </div>
+            </div>
+
+            <div class="notif-option">
+              <span class="notif-option-icon">🔔</span>
+              <div>
+                <h4>Browser Push (ntfy.sh)</h4>
+                <p>
+                  Subscribe to a private channel at <a href="https://ntfy.sh" target="_blank">ntfy.sh</a> — completely free.
+                  Set <code style="color:var(--primary)">NTFY_TOPIC</code> in your <code style="color:var(--primary)">.env</code> file
+                  and install the ntfy app on your phone to get instant push notifications.
+                </p>
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; border:1px solid rgba(0,245,255,0.15); border-radius: var(--radius-md); padding:14px; background:rgba(0,0,0,0.3);">
+              <p style="color:#ccc;font-size:0.83rem;line-height:1.6;">
+                <strong style="color:var(--primary)">How to set up .env:</strong><br>
+                Create a file called <code style="color:var(--primary)">.env</code> in your project root with:
+              </p>
+              <pre style="margin-top:10px;background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.1);padding:12px;border-radius:8px;color:#aaa;font-size:0.78rem;overflow-x:auto;">WA_PHONE=923XXXXXXXXX
+WA_KEY=your_callmebot_key
+# or
+GMAIL_USER=your@gmail.com
+GMAIL_PASS=your_app_password
+# or
+NTFY_TOPIC=your_private_channel</pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </main>
+  </div>
+
+  <!-- Edit Product Modal Overflow -->
+  <div id="edit-product-overlay" class="login-overlay hidden">
+    <div class="login-card" style="max-height: 90vh; overflow-y: auto; padding-top: 20px;">
+      <div class="login-header" style="margin-bottom: 15px;">
+        <h2>Edit Product</h2>
+      </div>
+      <form id="edit-product-form">
+        <input type="hidden" id="edit-product-id">
+        <input type="hidden" id="edit-product-old-category"> <!-- To track category moves -->
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" id="edit-product-name" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="edit-product-category" required>
+            <option value="anime">Anime</option>
+            <option value="marvel">Marvel</option>
+            <option value="dc">DC</option>
+            <option value="hogwarts">Hogwarts</option>
+            <option value="cars">Cars</option>
+            <option value="graphics">Graphics</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Price (Rs.)</label>
+          <input type="number" id="edit-product-price" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="edit-product-desc" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Image Filename</label>
+          <input type="text" id="edit-product-img">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button type="submit" class="btn-primary" style="flex:1;">Save Changes</button>
+          <button type="button" class="btn-accent" id="cancel-edit-btn" style="flex:1;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit/Add Hero Slide Modal -->
+  <div id="hero-slide-overlay" class="login-overlay hidden">
+    <div class="login-card" style="max-height: 90vh; overflow-y: auto; padding-top: 20px;">
+      <div class="login-header" style="margin-bottom: 15px;">
+        <h2 id="hero-modal-title">Edit Hero Slide</h2>
+      </div>
+      <form id="hero-slide-form">
+        <input type="hidden" id="hero-slide-id">
+        <div class="form-group">
+          <label>Slide Title</label>
+          <input type="text" id="hero-slide-title-input" required>
+        </div>
+        <div class="form-group">
+          <label>Subtitle / Description</label>
+          <textarea id="hero-slide-subtitle" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Image Filename</label>
+          <input type="text" id="hero-slide-img" placeholder="e.g. Goku Shirt Mockup.png" required>
+        </div>
+        <div class="form-group" style="padding-bottom:10px;">
+          <label>Visual Framing (Drag Image to Pan)</label>
+          <!-- The visual interactive tool -->
+          <div id="hero-preview-workspace" style="position:relative; width:100%; height:180px; background-color:#000; border:2px dashed rgba(0,245,255,0.3); border-radius:4px; overflow:hidden; cursor:grab; touch-action:none; margin-bottom:10px;">
+            <!-- Grid overly to act as anchor point guidelines -->
+            <div style="position:absolute; width:100%; height:100%; top:0; left:0; background-image:linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size:33.33% 33.33%; pointer-events:none; z-index:2;"></div>
+            <!-- The actual image layer -->
+            <div id="hero-preview-layer" style="position:absolute; width:100%; height:100%; top:0; left:0; background-image:none; background-repeat:no-repeat; background-position:50% 50%; background-size:cover; transition:background-size 0.2s;"></div>
+          </div>
+          
+          <label style="display:flex; justify-content:space-between;">
+            <span>Scale / Zoom</span>
+            <span id="hero-scale-readout">100%</span>
+          </label>
+          <input type="range" id="hero-slide-scale" min="20" max="300" value="100" style="width:100%;">
+          
+          <!-- Hidden inputs to store calculated backend values -->
+          <input type="hidden" id="hero-hidden-bgsize" value="cover">
+          <input type="hidden" id="hero-hidden-bgpos" value="50% 50%">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button type="submit" class="btn-primary" style="flex:1;">Save Slide</button>
+          <button type="button" class="btn-accent" id="cancel-hero-btn" style="flex:1;">Cancel</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="/js/admin.js"></script>

@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   initHeader();
   initSlider();
-  initLocation();
   initProducts();
   initCart();
   checkSession();
@@ -14,7 +13,6 @@ async function checkSession() {
     const res = await fetch('/api/session');
     const data = await res.json();
     const actionContainer = document.getElementById('header-right-actions');
-    
     if (data.user) {
       actionContainer.innerHTML = `<a href="/account" class="user-email-link">${data.user.email}</a>`;
     } else {
@@ -28,214 +26,357 @@ async function checkSession() {
 // --- Header Scroll Effect ---
 function initHeader() {
   const header = document.getElementById('main-header');
-  const catNav = document.getElementById('category-nav');
-  
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-    
-    // Adjust category nav stickiness
-    if (window.scrollY > 400 && window.innerWidth > 600) {
-       // Offset slightly on scroll
-    }
+    header.classList.toggle('scrolled', window.scrollY > 50);
   });
 }
 
 // --- Hero Slider ---
+const HERO_SLIDES_VERSION = 2; // bump to reset stale localStorage slide cache
+const defaultHeroSlides = [
+  { id: 'slide1', title: 'Wear the Vibe.', subtitle: 'Custom streetwear designed for Gen-Z.', img: 'Butter Paper BG.png', size: 'cover', pos: '50% 50%' },
+  { id: 'slide2', title: 'Dark Knight Collection', subtitle: 'Premium DC universe streetwear tees.', img: 'Batman Shirt Mockup.png', size: 'contain', pos: '50% 50%' },
+  { id: 'slide3', title: 'Anime Drops', subtitle: 'Your favorite characters. On your chest.', img: 'Goku Shirt Mockup.png', size: 'contain', pos: '50% 50%' }
+];
+
 function initSlider() {
+  const content = document.getElementById('slider-content');
+  const dotsContainer = document.getElementById('slider-dots');
+  
+  if (!content || !dotsContainer) return;
+
+  // Initialize from LocalStorage — reset if version is outdated
+  let slidesData = JSON.parse(localStorage.getItem('zz_hero_slides'));
+  const slidesVersion = parseInt(localStorage.getItem('zz_hero_slides_v') || '0');
+  if (!slidesData || slidesData.length === 0 || slidesVersion < HERO_SLIDES_VERSION) {
+    slidesData = defaultHeroSlides;
+    localStorage.setItem('zz_hero_slides', JSON.stringify(slidesData));
+    localStorage.setItem('zz_hero_slides_v', HERO_SLIDES_VERSION.toString());
+  }
+
+  content.innerHTML = '';
+  dotsContainer.innerHTML = '';
+
+  // Generate DOM
+  slidesData.forEach((slide, index) => {
+    // Generate slide
+    const slideDiv = document.createElement('div');
+    slideDiv.className = `slide ${index === 0 ? 'active' : ''}`;
+    slideDiv.style.backgroundImage = `url('/images/${encodeURIComponent(slide.img)}')`;
+    slideDiv.style.backgroundSize = slide.size || 'cover';
+    slideDiv.style.backgroundPosition = slide.pos || 'center';
+    slideDiv.style.backgroundRepeat = 'no-repeat';
+
+    slideDiv.innerHTML = `
+      <div class="slide-overlay">
+        <h2>${slide.title}</h2>
+        <p>${slide.subtitle}</p>
+      </div>
+    `;
+    content.appendChild(slideDiv);
+
+    // Generate dot
+    const dotSpan = document.createElement('span');
+    dotSpan.className = `dot ${index === 0 ? 'active' : ''}`;
+    dotsContainer.appendChild(dotSpan);
+  });
+
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
+  if (slides.length === 0) return;
+
   let currentSlide = 0;
   let slideInterval;
 
   function goToSlide(index) {
     slides[currentSlide].classList.remove('active');
     dots[currentSlide].classList.remove('active');
-    
     currentSlide = (index + slides.length) % slides.length;
-    
     slides[currentSlide].classList.add('active');
     dots[currentSlide].classList.add('active');
   }
 
-  function nextSlide() { goToSlide(currentSlide + 1); }
-  function prevSlide() { goToSlide(currentSlide - 1); }
+  const nextBtn = document.getElementById('slider-next');
+  const prevBtn = document.getElementById('slider-prev');
+  if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+  if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goToSlide(i)));
 
-  document.getElementById('slider-next').addEventListener('click', nextSlide);
-  document.getElementById('slider-prev').addEventListener('click', prevSlide);
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => goToSlide(index));
-  });
-
-  // Auto advance every 5s
-  function startSlide() {
-    slideInterval = setInterval(nextSlide, 5000);
-  }
-  
-  document.getElementById('hero-slider').addEventListener('mouseenter', () => clearInterval(slideInterval));
-  document.getElementById('hero-slider').addEventListener('mouseleave', startSlide);
-
+  function startSlide() { slideInterval = setInterval(() => goToSlide(currentSlide + 1), 5000); }
+  const slider = document.getElementById('hero-slider');
+  slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+  slider.addEventListener('mouseleave', startSlide);
   startSlide();
 }
 
-// --- Location Logic ---
-function initLocation() {
-  const selectBtn = document.getElementById('select-area-btn');
-  const trackBtn = document.getElementById('track-location-btn');
-  const dropdown = document.getElementById('location-dropdown');
-  const areaListWrap = document.getElementById('area-list');
-  const statusDiv = document.getElementById('location-status');
-
-  const areas = [
-    'Bahria Town', 'Baldia Town', 'Clifton', 'Defence (DHA)', 'FB Area', 
-    'Gadap Town', 'Gulberg', 'Gulistan-e-Johar', 'Gulshan-e-Iqbal', 
-    'Jamshed Town', 'Keamari', 'Korangi', 'Landhi', 'Liaquatabad', 
-    'Lyari', 'Malir', 'Nazimabad', 'New Karachi', 'North Karachi', 
-    'North Nazimabad', 'Orangi Town', 'PECHS', 'Saddar', 'Scheme 33', 
-    'Shah Faisal Town', 'SITE Area', 'Surjani Town', 'Tariq Road'
-  ].sort();
-
-  areas.forEach(area => {
-    const li = document.createElement('li');
-    li.textContent = area;
-    li.addEventListener('click', () => {
-      selectBtn.innerHTML = `📍 ${area} ▾`;
-      dropdown.classList.remove('open');
-      statusDiv.textContent = `Selected location: ${area}`;
-    });
-    areaListWrap.appendChild(li);
-  });
-
-  selectBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // prevent document listener from immediately closing it
-    dropdown.classList.toggle('open');
-  });
-
-  // Stop clicks inside dropdown from bubbling to document
-  dropdown.addEventListener('click', (e) => e.stopPropagation());
-
-  // Close dropdown if clicked outside
-  document.addEventListener('click', () => {
-    dropdown.classList.remove('open');
-  });
-
-  // Geolocation
-  trackBtn.addEventListener('click', () => {
-    if ('geolocation' in navigator) {
-      statusDiv.textContent = 'Detecting location...';
-      navigator.geolocation.getCurrentPosition(
-        async position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          try {
-            statusDiv.textContent = 'Resolving area name...';
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-            const data = await res.json();
-            const area = data.address.suburb || data.address.village || data.address.neighbourhood || data.address.residential || data.address.city_district || 'Karachi Area';
-            statusDiv.textContent = `📍 Area: ${area} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
-            selectBtn.innerHTML = `📍 ${area} ▾`;
-            dropdown.classList.remove('open');
-          } catch(err) {
-            statusDiv.textContent = `📍 Location detected: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-            selectBtn.innerHTML = `📍 GPS Location ▾`;
-          }
-        },
-        error => {
-          statusDiv.textContent = '❌ Could not detect location. Please select an area manually.';
-        }
-      );
-    } else {
-      statusDiv.textContent = 'Geolocation not supported by browser.';
+// --- Products Data ---
+const defaultProductsData = {
+  anime: [
+    {
+      id: 'a1', name: 'Demon Slayer — Tanjiro', price: 2500,
+      desc: 'Tanjiro Kamado breathing form graphic print on premium black cotton tee.',
+      img: 'Demon Slayer Shirt Mockup.png'
+    },
+    {
+      id: 'a2', name: 'Jujutsu Kaisen — Gojo', price: 2500,
+      desc: 'Gojo Satoru "Hollow Purple" technique graphic on oversized streetwear tee.',
+      img: 'Gojo Shirt Mockup.jpeg'
+    },
+    {
+      id: 'a3', name: 'Attack on Titan — Eren', price: 2500,
+      desc: 'Eren Yeager in his rumbling arc — Founding Titan power art.',
+      img: 'Eren 2 Shirt Mockup.jpeg'
+    },
+    {
+      id: 'a4', name: 'Dragon Ball Z — Goku Base', price: 2500,
+      desc: 'Son Goku in his iconic base form stance — classic Dragon Ball Z art.',
+      img: 'Goku Shirt Mockup.png'
+    },
+    {
+      id: 'a5', name: 'Naruto — Itachi Uchiha', price: 2500,
+      desc: 'Itachi Uchiha Mangekyo Sharingan art — Anbu Black Ops aesthetic.',
+      img: 'Itachi Shirt Mockup.png'
+    },
+    {
+      id: 'a6', name: 'Solo Levelling — Sung Jin Woo', price: 2500,
+      desc: 'Shadow Monarch Sung Jin Woo — Shadow Army graphic print.',
+      img: 'Solo Levelling Shirt Mockup.png'
+    },
+    {
+      id: 'a7', name: 'One Piece — Luffy', price: 2500,
+      desc: 'Monkey D. Luffy Gear 5 — Straw Hat Pirates banner tee.',
+      img: 'Luffy Shirt Mockup.png'
+    },
+    {
+      id: 'a8', name: 'Berserk — Guts', price: 2500,
+      desc: 'Guts the Black Swordsman with Dragonslayer — Berserk dark graphic.',
+      img: 'Berserk Shirt Mockup.png'
+    },
+    {
+      id: 'a9', name: 'JJK — Itadori Yuji', price: 2500,
+      desc: 'Itadori Yuji in battle pose — Jujutsu Kaisen graphic print.',
+      img: 'Itadori Shirt Mockup.png'
+    },
+    {
+      id: 'a10', name: 'JJK — Sukuna', price: 2500,
+      desc: 'Ryomen Sukuna, King of Curses — four eyes, four arms, full power.',
+      img: 'Sukuna Shirt Mockup.png'
+    },
+    {
+      id: 'a11', name: 'JJK — Maki Zenin', price: 2500,
+      desc: 'Maki Zenin — Zero cursed energy, unlimited strength graphic.',
+      img: 'Maki Shirt Mockup.png'
+    },
+    {
+      id: 'a12', name: 'Naruto — One Piece Crossover', price: 2500,
+      desc: 'Classic Naruto orange jumpsuit art — retro ninja design.',
+      img: 'Simple Naruto Shirt Mockup.png'
+    },
+    {
+      id: 'a13', name: 'Naruto — Yellow Flash', price: 2500,
+      desc: 'Minato Namikaze, the Yellow Flash of the Leaf — Rasengan pose.',
+      img: 'Yellow Naruto Shirt Mockup.png'
+    },
+    {
+      id: 'a14', name: 'Naruto — White Snow', price: 2500,
+      desc: 'Anbu-style Naruto in white — clean, rare aesthetic print.',
+      img: 'White Naruto Shirt Mockup.png'
+    },
+    {
+      id: 'a15', name: 'Naruto — Sharingan Eyes', price: 2500,
+      desc: 'Three Uchiha Sharingan eyes pattern — Obito, Sasuke, Itachi.',
+      img: 'Sharingans Shirt Mockup.jpeg'
+    },
+    {
+      id: 'a16', name: 'Naruto — Madara Uchiha', price: 2500,
+      desc: 'Madara Uchiha — Eternal Mangekyo Sharingan awakened art.',
+      img: 'Madara Shirt Mockup.png'
+    },
+    {
+      id: 'a17', name: 'One Piece — Crew Art', price: 2500,
+      desc: 'Thousand Sunny crew graphic — the full Straw Hat Pirates lineup.',
+      img: 'One Piece Shirt Mockup.png'
+    },
+    {
+      id: 'a18', name: 'Attack on Titan — Eren V2', price: 2500,
+      desc: 'Eren Jaeger Survey Corps titan shifter alternate art.',
+      img: 'Eren Shirt Mockup.jpeg'
     }
-  });
-}
-
-// --- Products Logic ---
-const productsData = {
-  burgers: [
-    { id: 'b1', name: 'Classic AA Burger', price: 650, desc: 'Single smash patty, cheese, AA sauce, lettuce, tomato.', img: 'Classic Burger.jpg' },
-    { id: 'b2', name: 'Double Smash Burger', price: 900, desc: 'Double beef patties, double cheese, caramelized onions.', img: 'Double Smash.jpg' },
-    { id: 'b3', name: 'Crispy Chicken Burger', price: 700, desc: 'Crispy fried chicken thigh, spicy mayo, pickles.', img: 'Crispy Chicken.jpg' },
-    { id: 'b4', name: 'Spicy Jalapeño Burger', price: 750, desc: 'Beef patty, jalapeños, spicy hot sauce, cheddar.', img: 'Spicy Jalapeno.jpg' },
-    { id: 'b5', name: 'BBQ Bacon Stack', price: 1050, desc: 'Beef patty, beef bacon strips, BBQ sauce, onion rings.', img: 'Bacon Stack Burger.jpg' },
-    { id: 'b6', name: 'Mushroom Swiss Burger', price: 850, desc: 'Beef patty, sautéed mushrooms, swiss cheese.', img: 'Mushroom Swiss Burger.jpg' }
   ],
-  drinks: [
-    { id: 'd1', name: 'Classic Cola', price: 150, desc: 'Ice cold classic cola.', img: 'Coke.jpg' },
-    { id: 'd2', name: 'Lemon Crush', price: 200, desc: 'Fresh mint and lemon iced cooler.', img: 'Lemon Crush.jpg' },
-    { id: 'd3', name: 'Mango Shake', price: 400, desc: 'Thick mango milkshake.', img: 'Mango Shake.jpg' },
-    { id: 'd4', name: 'Chocolate Milkshake', price: 450, desc: 'Rich chocolate shake with whipped cream.', img: 'Chocolate Milkshake.jpg' }
+  marvel: [
+    {
+      id: 'm1', name: 'Deadpool — Maximum Effort', price: 2500,
+      desc: 'Wade Wilson — Deadpool mercenary with katanas graphic. Maximum effort.',
+      img: 'Deadpool Shirt Mockup.png'
+    },
+    {
+      id: 'm2', name: 'Spider-Gwen', price: 2500,
+      desc: 'Gwen Stacy Spider-Woman — Ghost Spider neon aesthetic streetwear.',
+      img: 'Spiderman-Gwen Shirt Mockup.png'
+    },
+    {
+      id: 'm3', name: 'Wolverine — Adamantium', price: 2500,
+      desc: 'Logan in his classic X-Men yellow suit — adamantium claws extended.',
+      img: 'Wolverine Shirt Mockup.png'
+    }
   ],
-  fries: [
-    { id: 'f1', name: 'Regular Fries', price: 300, desc: 'Skin-on crispy salted fries.', img: 'Regular Fries.jpg' },
-    { id: 'f2', name: 'Loaded Cheese Fries', price: 550, desc: 'Fries topped with melted cheese sauce and jalapeños.', img: 'Loaded Cheese Fries.jpg' },
-    { id: 'f3', name: 'Spicy Masala Fries', price: 350, desc: 'Crispy fries tossed in our secret spicy masala.', img: 'Spicy Masala Fries.jpg' },
-    { id: 'f4', name: 'Waffle Fries', price: 400, desc: 'Crispy waffle cut potatoes.', img: 'Waffle Fries.jpg' }
+  dc: [
+    {
+      id: 'd1', name: 'Batman — Dark Knight', price: 2500,
+      desc: 'The Caped Crusader — Gotham City vigilante premium dark graphic tee.',
+      img: 'Batman Shirt Mockup.png'
+    }
   ],
-  combos: [
-    { id: 'c1', name: 'Family Feast', price: 2800, desc: '4 burgers, 4 regular drinks, 2 large fries.', img: 'Family Feast (4 burgers, 4 drinks, 2 large fries).jpg' },
-    { id: 'c2', name: 'Weekend Special', price: 1500, desc: '2 double smash burgers, 2 drinks, 1 loaded fry.', img: 'Weekend Special (2 double smash, 2 drinks, 1 loaded fry).jpg' }
+  hogwarts: [
+    {
+      id: 'h1', name: 'Hogwarts School Crest', price: 2500,
+      desc: 'Official Hogwarts School of Witchcraft & Wizardry all-house crest design.',
+      img: 'Hogwarts Shirt Mockup.png'
+    },
+    {
+      id: 'h2', name: 'Gryffindor — House of Courage', price: 2500,
+      desc: 'Gryffindor house crest — brave hearts, lion heart, Dumbledore\'s Army.',
+      img: 'Gryffindor Shirt Mockup.png'
+    },
+    {
+      id: 'h3', name: 'Slytherin — House of Ambition', price: 2500,
+      desc: 'Slytherin house crest — pure blood, cunning, the Chamber of Secrets.',
+      img: 'Slytherin Shirt Mockup.png'
+    },
+    {
+      id: 'h4', name: 'Ravenclaw — House of Wisdom', price: 2500,
+      desc: 'Ravenclaw house crest — wit beyond measure is man\'s greatest treasure.',
+      img: 'Ravenclaw Shirt Mockup.png'
+    },
+    {
+      id: 'h5', name: 'Hufflepuff — House of Loyalty', price: 2500,
+      desc: 'Hufflepuff house crest — hard work, patience, loyalty, fair play.',
+      img: 'Hufflepuff Shirt Mockup.png'
+    }
   ],
-  midnight: [
-    { id: 'm1', name: 'Midnight Smash Deal', price: 999, desc: '2 classic burgers + 2 drinks. Available after 11PM.', img: 'Afternight deal.jpg' },
-    { id: 'm2', name: 'After-Hours Special', price: 850, desc: '1 double smash, large fries. Available after 11PM.', img: 'Afternight deal.jpg' }
+  cars: [
+    {
+      id: 'c1', name: 'BMW M-Series', price: 2500,
+      desc: 'BMW M Performance badge / vehicle art — for the car enthusiast who wears their passion.',
+      img: 'BMW Shirt Mockup.png'
+    },
+    {
+      id: 'c2', name: 'Lamborghini — Raging Bull', price: 2500,
+      desc: 'Lamborghini Aventador / Huracan bull graphic — supercar streetwear for real ones.',
+      img: 'Lamborghini Shirt Mockup.png'
+    }
+  ],
+  graphics: [
+    {
+      id: 'g1', name: 'Cat Graphic — Street Kitty', price: 2500,
+      desc: 'Aesthetic cat illustration — chill, minimalist, perfect for any vibe.',
+      img: 'Cat-Graphic Shirt Mockup.png'
+    }
   ]
 };
+
+// Initialize localStorage DB if empty
+let productsData = JSON.parse(localStorage.getItem('zz_all_products'));
+if (!productsData || Object.keys(productsData).length === 0) {
+  productsData = defaultProductsData;
+  localStorage.setItem('zz_all_products', JSON.stringify(productsData));
+}
+
+// Ensure custom items from admin manager are merged into the main catalog if they exist
+const customItems = JSON.parse(localStorage.getItem('zz_custom_items') || '[]');
+if (customItems.length > 0) {
+  customItems.forEach(item => {
+    // If it doesn't already exist in the base category, push it
+    const catArray = productsData[item.category] || [];
+    if (!catArray.find(i => i.id === item.id)) {
+      catArray.push(item);
+      productsData[item.category] = catArray;
+    }
+  });
+  // Clear the bridge storage and permanently save to master catalog
+  localStorage.removeItem('zz_custom_items');
+  localStorage.setItem('zz_all_products', JSON.stringify(productsData));
+}
+
+// --- Discount Pricing Helper ---
+let currentCategory = 'anime'; // tracks the active category for modal pricing
+
+/**
+ * Returns the effective price for an item, given the active discount config.
+ * Category-specific discount takes priority over store-wide.
+ * @returns {{ price: number, original: number|null, badge: string|null }}
+ */
+function getDiscountedPrice(basePrice, category) {
+  const discounts = JSON.parse(localStorage.getItem('zz_discounts') || '{}');
+  const catD = discounts.categories && discounts.categories[category];
+  const storeD = discounts.store;
+  // Category wins over store-wide
+  const active = (catD && catD.active) ? catD : (storeD && storeD.active) ? storeD : null;
+  if (!active) return { price: basePrice, original: null, badge: null };
+
+  let discounted;
+  let badge;
+  if (active.type === 'flat') {
+    discounted = Math.max(0, basePrice - active.value);
+    badge = `Rs. ${active.value.toLocaleString()} OFF`;
+  } else {
+    discounted = Math.round(basePrice * (1 - active.value / 100));
+    badge = `${active.value}% OFF`;
+  }
+  return { price: discounted, original: basePrice, badge };
+}
 
 function initProducts() {
   const grid = document.getElementById('products-grid');
   const tabs = document.querySelectorAll('.tab-btn');
-  
+
   function renderCategory(category) {
-    grid.innerHTML = ''; // Clear current
+    currentCategory = category; // track so modal knows current category
+    grid.innerHTML = '';
     const items = productsData[category] || [];
-    
-    // Check if it's midnight
-    const hour = new Date().getHours();
-    const isMidnight = hour >= 23 || hour < 4;
+
+    if (items.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#666;padding:40px 0;">No items in this category yet.</div>`;
+      return;
+    }
 
     items.forEach((item, index) => {
-      const isLocked = category === 'midnight' && !isMidnight;
-      
       const card = document.createElement('div');
       card.className = 'product-card';
-      
+
+      // Apply discount pricing
+      const { price, original, badge } = getDiscountedPrice(item.price, category);
+      const priceHtml = original
+        ? `<div class="price-wrapper">
+             <span class="price-original">Rs. ${original.toLocaleString()}</span>
+             <span class="price-discounted">Rs. ${price.toLocaleString()}</span>
+           </div>`
+        : `<span class="product-price">Rs. ${price.toLocaleString()}</span>`;
+      const badgeHtml = badge
+        ? `<span class="discount-badge">${badge}</span>`
+        : '';
+
       card.innerHTML = `
-        <div class="product-img-wrapper" style="background-color: ${stringToColor(item.name)}">
+        <div class="product-img-wrapper">
+          ${badgeHtml}
           ${item.img ? `<img src="/images/${encodeURIComponent(item.img)}" alt="${item.name}" class="product-img" loading="lazy">` : ''}
-          ${isLocked ? '<span class="locked-item" title="Available after 11 PM">🔒 11 PM</span>' : ''}
         </div>
         <div class="product-info">
           <h4 class="product-title">${item.name}</h4>
           <p class="product-desc">${item.desc}</p>
           <div class="product-footer">
-            <span class="product-price">Rs. ${item.price}</span>
-            <button class="add-btn" aria-label="Add to cart" tabindex="-1">+</button>
+            ${priceHtml}
+            <button class="add-btn" aria-label="Add ${item.name} to cart">+</button>
           </div>
         </div>
       `;
-      
-      if (!isLocked) {
-        card.addEventListener('click', () => openModal(item, category));
-      } else {
-        card.style.opacity = '0.6'; // overrides animation start opacity
-        card.style.animationFillMode = 'none';
-        card.style.animation = 'none';
-        card.style.opacity = '0.6';
-        card.style.cursor = 'not-allowed';
-      }
 
-      // Stagger each card
-      card.style.animationDelay = `${index * 0.06}s`;
+      card.addEventListener('click', () => openModal(item, category));
+      card.style.animationDelay = `${index * 0.05}s`;
       grid.appendChild(card);
     });
   }
 
-  // Handle Tabs
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -244,16 +385,7 @@ function initProducts() {
     });
   });
 
-  // Initial render
-  renderCategory('burgers');
-}
-
-// Generate slight color variation for placeholder image
-function stringToColor(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
-  return '#' + '00000'.substring(0, 6 - c.length) + c + '22'; // slight transparency
+  renderCategory('anime');
 }
 
 // --- Modal Logic ---
@@ -261,59 +393,56 @@ let currentItem = null;
 let currentQty = 1;
 
 function openModal(item, category) {
-  currentItem = item;
   currentQty = 1;
   document.getElementById('qty-value').textContent = currentQty;
   document.getElementById('modal-title').textContent = item.name;
   document.getElementById('modal-description').textContent = item.desc;
-  document.getElementById('modal-price').textContent = `Rs. ${item.price}`;
+
+  // Compute discounted price for this item
+  const { price, original, badge } = getDiscountedPrice(item.price, category || currentCategory);
+  const modalPriceEl = document.getElementById('modal-price');
+  if (original) {
+    modalPriceEl.innerHTML = `
+      <span class="modal-price-original">Rs. ${original.toLocaleString()}</span>
+      Rs. ${price.toLocaleString()}`;
+  } else {
+    modalPriceEl.textContent = `Rs. ${price.toLocaleString()}`;
+  }
+
+  // Clone item with effective (discounted) price so cart stores the sale price
+  currentItem = { ...item, price };
+
   const modalImg = document.getElementById('modal-image');
   if (item.img) {
     modalImg.style.backgroundImage = `url('/images/${encodeURIComponent(item.img)}')`;
-    modalImg.style.backgroundSize = 'cover';
+    modalImg.style.backgroundSize = 'contain';
+    modalImg.style.backgroundRepeat = 'no-repeat';
     modalImg.style.backgroundPosition = 'center';
-  } else {
-    modalImg.style.backgroundImage = 'none';
-    modalImg.style.backgroundColor = stringToColor(item.name);
-  }
-  
-  // Inject options based on category
-  const optionsDiv = document.getElementById('modal-options');
-  optionsDiv.innerHTML = '';
-  
-  if (category === 'burgers' || category === 'midnight') {
-    optionsDiv.innerHTML = `
-      <div class="option-group">
-        <label>Spice Level</label>
-        <select id="opt-spice">
-          <option value="Mild">Mild</option>
-          <option value="Medium" selected>Medium</option>
-          <option value="Extra Hot">Extra Hot</option>
-        </select>
-      </div>
-    `;
-  } else if (category === 'drinks') {
-    optionsDiv.innerHTML = `
-      <div class="option-group">
-        <label>Size</label>
-        <select id="opt-size">
-          <option value="Regular" selected>Regular</option>
-          <option value="Large (+Rs. 100)">Large (+Rs. 100)</option>
-        </select>
-      </div>
-      <div class="option-group">
-        <label>Ice</label>
-        <select id="opt-ice">
-          <option value="Normal">Normal</option>
-          <option value="Less Ice">Less Ice</option>
-          <option value="No Ice">No Ice</option>
-        </select>
-      </div>
-    `;
+    modalImg.style.backgroundColor = 'rgba(0,0,0,0.6)';
   }
 
-  const overlay = document.getElementById('product-modal-overlay');
-  overlay.classList.add('open');
+  // Size and Color options
+  document.getElementById('modal-options').innerHTML = `
+    <div class="option-group">
+      <label>Size</label>
+      <select id="opt-size">
+        <option value="S">Small (S)</option>
+        <option value="M" selected>Medium (M)</option>
+        <option value="L">Large (L)</option>
+        <option value="XL">Extra Large (XL)</option>
+        <option value="XXL">Double XL (XXL)</option>
+      </select>
+    </div>
+    <div class="option-group">
+      <label>Color</label>
+      <select id="opt-color">
+        <option value="Black" selected>Black</option>
+        <option value="White">White</option>
+      </select>
+    </div>
+  `;
+
+  document.getElementById('product-modal-overlay').classList.add('open');
 }
 
 function initModal() {
@@ -342,60 +471,66 @@ function initModal() {
 
   addBtn.addEventListener('click', () => {
     if (!currentItem) return;
-    
-    // Gather options
     const options = {};
-    const spice = document.getElementById('opt-spice');
-    if (spice) options.Spice = spice.value;
     const size = document.getElementById('opt-size');
     if (size) options.Size = size.value;
-    const ice = document.getElementById('opt-ice');
-    if (ice) options.Ice = ice.value;
+    const color = document.getElementById('opt-color');
+    if (color) options.Color = color.value;
 
     addToCart(currentItem, currentQty, options);
     overlay.classList.remove('open');
+
+    // Show mini toast
+    showToast(`${currentItem.name} added to cart!`);
   });
 }
 
-// initModal moved to DOMContentLoaded
 // --- Cart Logic ---
 function initCart() {
   updateCartBadge();
 }
 
 function addToCart(item, qty, options) {
-  let cart = JSON.parse(localStorage.getItem('aa_cart')) || [];
-  
-  // Create unique signature based on options
+  let cart = JSON.parse(localStorage.getItem('zz_cart')) || [];
   const optionsStr = JSON.stringify(options);
   const existingIndex = cart.findIndex(c => c.id === item.id && JSON.stringify(c.options) === optionsStr);
 
   if (existingIndex > -1) {
     cart[existingIndex].quantity += qty;
   } else {
-    cart.push({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: qty,
-      options: options
-    });
+    cart.push({ id: item.id, name: item.name, price: item.price, quantity: qty, options });
   }
-  
-  localStorage.setItem('aa_cart', JSON.stringify(cart));
+
+  localStorage.setItem('zz_cart', JSON.stringify(cart));
   updateCartBadge();
   animateCartIcon();
 }
 
 function updateCartBadge() {
-  let cart = JSON.parse(localStorage.getItem('aa_cart')) || [];
+  let cart = JSON.parse(localStorage.getItem('zz_cart')) || [];
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  document.getElementById('cart-count').textContent = totalItems;
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = totalItems;
 }
 
 function animateCartIcon() {
   const cartBtn = document.getElementById('cart-btn');
+  if (!cartBtn) return;
   cartBtn.classList.remove('cart-bounce');
-  void cartBtn.offsetWidth; // trigger reflow
+  void cartBtn.offsetWidth;
   cartBtn.classList.add('cart-bounce');
+}
+
+// --- Toast ---
+function showToast(msg) {
+  let toast = document.getElementById('zz-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'zz-toast';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2800);
 }

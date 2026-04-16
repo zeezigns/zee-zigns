@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadCart() {
-  cartItems = JSON.parse(localStorage.getItem('aa_cart')) || [];
+  cartItems = JSON.parse(localStorage.getItem('zz_cart')) || [];
   
   if (cartItems.length === 0) {
     document.getElementById('empty-cart-view').classList.remove('hidden');
@@ -132,7 +132,7 @@ async function submitOrder(orderDetails) {
     
     if (res.ok && result.success) {
       // Clear cart
-      localStorage.removeItem('aa_cart');
+      localStorage.removeItem('zz_cart');
       
       // Show success
       document.getElementById('success-order-num').textContent = `#${result.orderNumber}`;

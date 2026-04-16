@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 function generateOrderNumber() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = 'AA-';
+  let result = 'ZZ-';
   for (let i = 0; i < 6; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
