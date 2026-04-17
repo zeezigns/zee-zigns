@@ -287,6 +287,7 @@ function initStoreManager() {
   
   if (!form) return;
 
+  renderCategoryDropdowns(); // Load dynamic categories
   renderCatalog();       // Initial load
   initHeroManager();     // Load hero slider manager
   initDiscountManager(); // Load discount manager
@@ -296,13 +297,17 @@ function initStoreManager() {
     e.preventDefault();
     const msg = document.getElementById('add-product-msg');
     const name = document.getElementById('new-product-name').value.trim();
-    const category = document.getElementById('new-product-category').value;
+    let category = document.getElementById('new-product-new-category').value.trim().toLowerCase();
+    
+    if (!category) {
+      category = document.getElementById('new-product-category').value;
+    }
     const price = parseInt(document.getElementById('new-product-price').value);
     const desc = document.getElementById('new-product-desc').value.trim();
     const img = document.getElementById('new-product-img').value.trim();
 
     if (!name || !category || !price) {
-      msg.textContent = '❌ Please fill all required fields.';
+      msg.textContent = '❌ Please select or enter a category and fill all required fields.';
       msg.style.color = '#ff5b5b';
       return;
     }
@@ -318,8 +323,10 @@ function initStoreManager() {
     msg.style.color = '#00d280';
     form.reset();
     document.getElementById('new-product-price').value = 2500;
+    document.getElementById('new-product-new-category').value = '';
 
     renderCatalog(); // Refresh list
+    renderCategoryDropdowns(); // Update dropdowns with new category if any
 
     setTimeout(() => { msg.textContent = ''; }, 4000);
   });
@@ -358,6 +365,36 @@ function initStoreManager() {
     editOverlay.classList.add('hidden');
     renderCatalog();
     setTimeout(() => alert('Product updated successfully!'), 100);
+  });
+}
+
+function renderCategoryDropdowns() {
+  const masterCatalog = JSON.parse(localStorage.getItem('zz_all_products') || '{}');
+  const cats = Object.keys(masterCatalog);
+  if(cats.length === 0) cats.push('anime', 'marvel', 'dc', 'hogwarts', 'cars', 'graphics');
+
+  const selects = [
+    { el: document.getElementById('d-category'), empty: false },
+    { el: document.getElementById('edit-product-category'), empty: false },
+    { el: document.getElementById('new-product-category'), empty: true }
+  ];
+
+  selects.forEach(sel => {
+    if(!sel.el) return;
+    const currentVal = sel.el.value;
+    sel.el.innerHTML = '';
+    if(sel.empty) {
+      sel.el.innerHTML = '<option value="">-- Select Existing Category --</option>';
+    }
+    cats.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+      sel.el.appendChild(opt);
+    });
+    if(currentVal && cats.includes(currentVal)) {
+      sel.el.value = currentVal;
+    }
   });
 }
 

@@ -328,6 +328,21 @@ function getDiscountedPrice(basePrice, category) {
 
 function initProducts() {
   const grid = document.getElementById('products-grid');
+  const tabsContainer = document.getElementById('category-tabs');
+  const categories = Object.keys(productsData);
+
+  // Generate category tabs dynamically
+  if (tabsContainer) {
+    tabsContainer.innerHTML = '';
+    categories.forEach((cat, index) => {
+      const btn = document.createElement('button');
+      btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+      btn.dataset.category = cat;
+      btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+      tabsContainer.appendChild(btn);
+    });
+  }
+
   const tabs = document.querySelectorAll('.tab-btn');
 
   function renderCategory(category) {
